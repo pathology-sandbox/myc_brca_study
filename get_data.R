@@ -46,11 +46,24 @@ subs <- function(x){
 hpa_myc <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
                      sheetName = 'HPA_MYC',
                      colClasses=colclass)
+temp_l <- lapply(as.vector(hpa_myc$Description), subs)
+indata <- as.data.frame(do.call(rbind, temp_l))
+hpa_myc$Description <- NULL
+hpa_myc <- merge(hpa_myc, indata, by=NULL)
 
 hpa_brca1 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
                        sheetName = 'HPA_BRCA1', 
                        colClasses=colclass)
+temp_l <- lapply(as.vector(hpa_brca1$Description), subs)
+indata <- as.data.frame(do.call(rbind, temp_l))
+hpa_brca1$Description <- NULL
+hpa_brca1 <- merge(hpa_brca1, indata, by=NULL)
 
 hpa_brca2 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
                        sheetName = 'HPA_BRCA2',
                        colClasses=colclass)
+temp_l <- lapply(as.vector(hpa_brca2$Description), subs)
+indata <- as.data.frame(do.call(rbind, temp_l))
+hpa_brca2$Description <- NULL
+hpa_brca2 <- merge(hpa_brca2, indata, by=NULL)
+
