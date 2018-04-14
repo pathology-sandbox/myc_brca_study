@@ -67,3 +67,11 @@ indata <- as.data.frame(do.call(rbind, temp_l))
 hpa_brca2$Description <- NULL
 hpa_brca2 <- merge(hpa_brca2, indata, by=NULL)
 
+# Homogenize sample_id key to merge data
+set_sample_id <- function(x){
+  y <- append(c('sample_id'), names(x)[2:length(x)])
+  colnames(x) <- y
+  return(x)
+}
+
+
