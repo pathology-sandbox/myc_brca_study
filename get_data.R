@@ -1,5 +1,6 @@
 library(xlsx)
 library(stringr)
+library(data.table)
 
 
 colclass <- rep('character', times=4)
@@ -81,3 +82,5 @@ fix_sample_ids <- function(s_id){
   )
 }
 
+df_list <- list(muts_amps, brca1, brca2, hpa_myc, hpa_brca1, hpa_brca2) # pack dfs
+df_list <- lapply(df_list, setDT) # conver dfs to data tables
