@@ -44,29 +44,28 @@ subs <- function(x){
     race = char_check(v[race]))
 }
 
+merge_new_cols <- function(df){
+  temp_l <- lapply(as.vector(df$Description), subs)
+  indata <- as.data.frame(do.call(rbind, temp_l))
+  df$Description <- NULL
+  new_df <- merge(df, indata, by=NULL)
+  return(new_df)
+}
+
 hpa_myc <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
                      sheetName = 'HPA_MYC',
                      colClasses=colclass)
-temp_l <- lapply(as.vector(hpa_myc$Description), subs)
-indata <- as.data.frame(do.call(rbind, temp_l))
-hpa_myc$Description <- NULL
-hpa_myc <- merge(hpa_myc, indata, by=NULL)
+hpa_myc <- merge_new_cols(hpa_myc)
 
 hpa_brca1 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
                        sheetName = 'HPA_BRCA1', 
                        colClasses=colclass)
-temp_l <- lapply(as.vector(hpa_brca1$Description), subs)
-indata <- as.data.frame(do.call(rbind, temp_l))
-hpa_brca1$Description <- NULL
-hpa_brca1 <- merge(hpa_brca1, indata, by=NULL)
+hpa_brca1 <- merge_new_cols(hpa_brca1)
 
 hpa_brca2 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
                        sheetName = 'HPA_BRCA2',
                        colClasses=colclass)
-temp_l <- lapply(as.vector(hpa_brca2$Description), subs)
-indata <- as.data.frame(do.call(rbind, temp_l))
-hpa_brca2$Description <- NULL
-hpa_brca2 <- merge(hpa_brca2, indata, by=NULL)
+hpa_brca2 <- merge_new_cols(hpa_brca2)
 
 # Homogenize sample_id key to merge data
 set_sample_id <- function(x){
