@@ -1,4 +1,6 @@
 library(xlsx)
+library(stringr)
+
 
 colclass <- rep('character', times=4)
 
@@ -28,6 +30,17 @@ char_check <- function(x){
   }  else {
     return(x)
   }
+}
+
+subs <- function(x){
+  v <- strsplit(x[1], ',')[[1]]
+  year <- str_detect(v, 'year')
+  sex <- str_detect(v, 'male')
+  race <- !as.logical(year+sex)
+  l <- c(
+    year = gsub("([0-9]+).*$", "\\1", char_check(v[year])),
+    sex = char_check(v[sex]), 
+    race = char_check(v[race]))
 }
 
 hpa_myc <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
