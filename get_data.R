@@ -75,7 +75,7 @@ set_sample_id <- function(x){
   return(x)
 }
 
-# Fix sample IDs by remiving last letter (unrequired) from selected datasets
+# Fix sample IDs by removing last letter (unrequired) from selected datasets
 fix_sample_ids <- function(s_id){
   return(
     substr(s_id, 1, nchar(s_id) - 1)
