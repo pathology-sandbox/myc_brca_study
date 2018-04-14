@@ -86,3 +86,7 @@ df_list <- list(muts_amps, brca1, brca2, hpa_myc, hpa_brca1, hpa_brca2) # pack d
 df_list <- lapply(df_list, setDT) # conver dfs to data tables
 df_list <- lapply(df_list, set_sample_id) # apply change 'sample_id' t all dts
 
+df_list[[4]]$sample_id <-sapply(as.vector(df_list[[4]]$sample_id), fix_sample_ids)
+df_list[[5]]$sample_id <-sapply(as.vector(df_list[[5]]$sample_id), fix_sample_ids)
+df_list[[5]]$sample_id <-sapply(as.vector(df_list[[6]]$sample_id), fix_sample_ids)
+
