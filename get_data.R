@@ -38,10 +38,11 @@ subs <- function(x){
   year <- str_detect(v, 'year')
   sex <- str_detect(v, 'male')
   race <- !as.logical(year+sex)
-  l <- c(
+  new_list <- c(
     year = gsub("([0-9]+).*$", "\\1", char_check(v[year])),
     sex = char_check(v[sex]), 
     race = char_check(v[race]))
+  return(new_list)
 }
 
 merge_new_cols <- function(df){
