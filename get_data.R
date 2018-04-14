@@ -22,6 +22,14 @@ brca2 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx",
 
 colclass <- c('character', 'character', 'numeric')
 
+char_check <- function(x){
+  if(identical(x, character(0))){
+    return(NA_character_)
+  }  else {
+    return(x)
+  }
+}
+
 hpa_myc <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
                      sheetName = 'HPA_MYC',
                      colClasses=colclass)
