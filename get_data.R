@@ -90,3 +90,4 @@ df_list[[4]]$sample_id <-sapply(as.vector(df_list[[4]]$sample_id), fix_sample_id
 df_list[[5]]$sample_id <-sapply(as.vector(df_list[[5]]$sample_id), fix_sample_ids)
 df_list[[5]]$sample_id <-sapply(as.vector(df_list[[6]]$sample_id), fix_sample_ids)
 
+full_data <- join_all(df_list, by='sample_id', type='left', match = "all")
