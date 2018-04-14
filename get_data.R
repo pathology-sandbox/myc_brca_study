@@ -58,15 +58,15 @@ hpa_myc <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx",
                      colClasses = colclass)
 hpa_myc <- merge_new_cols(hpa_myc)
 
-hpa_brca1 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
-                       sheetName = 'HPA_BRCA1', 
-                       colClasses=colclass)
-hpa_brca1 <- merge_new_cols(hpa_brca1)
-
-hpa_brca2 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
-                       sheetName = 'HPA_BRCA2',
-                       colClasses=colclass)
-hpa_brca2 <- merge_new_cols(hpa_brca2)
+# hpa_brca1 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
+#                        sheetName = 'HPA_BRCA1', 
+#                        colClasses = colclass)
+# hpa_brca1 <- merge_new_cols(hpa_brca1)
+# 
+# hpa_brca2 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
+#                        sheetName = 'HPA_BRCA2',
+#                        colClasses = colclass)
+# hpa_brca2 <- merge_new_cols(hpa_brca2)
 
 # Homogenize sample_id key to merge data
 set_sample_id <- function(x){
