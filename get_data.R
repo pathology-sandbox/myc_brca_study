@@ -88,6 +88,9 @@ df_list <- lapply(df_list, setDT) # conver dfs to data tables
 df_list <- lapply(df_list, set_sample_id) # apply change 'sample_id' t all dts
 
 df_list[[4]]$sample_id <-sapply(as.vector(df_list[[4]]$sample_id), fix_sample_ids)
+
+rm(list=setdiff(ls(), "df_list"))
+
 df_list[[5]]$sample_id <-sapply(as.vector(df_list[[5]]$sample_id), fix_sample_ids)
 df_list[[5]]$sample_id <-sapply(as.vector(df_list[[6]]$sample_id), fix_sample_ids)
 
