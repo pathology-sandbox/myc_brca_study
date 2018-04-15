@@ -61,15 +61,20 @@ hpa_myc <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx",
 hpa_myc <- merge_new_cols(hpa_myc)
 demographics <- hpa_myc[,c('Sample.ID', 'year', 'sex', 'race')]
 
-# hpa_brca1 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
-#                        sheetName = 'HPA_BRCA1', 
-#                        colClasses = colclass)
-# hpa_brca1 <- merge_new_cols(hpa_brca1)
-# 
-# hpa_brca2 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
-#                        sheetName = 'HPA_BRCA2',
-#                        colClasses = colclass)
-# hpa_brca2 <- merge_new_cols(hpa_brca2)
+hpa_myc <- hpa_myc[,c('Sample.ID', 'FPKM')]
+names(hpa_myc)[2] <- 'fpkm_myc'
+
+hpa_brca1 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx",
+                       sheetName = 'HPA_BRCA1',
+                       colClasses = colclass)
+hpa_brca1 <- hpa_brca1[,c('Sample', 'FPKM')]
+names(hpa_brca1)[2] <- 'fpkm_brca1'
+
+hpa_brca2 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx",
+                       sheetName = 'HPA_BRCA2',
+                       colClasses = colclass)
+hpa_brca2 <- hpa_brca2[,c('Sample', 'FPKM')]
+names(hpa_brca2)[2] <- 'fpkm_brca2'
 
 # Homogenize sample_id key to merge data
 set_sample_id <- function(x){
