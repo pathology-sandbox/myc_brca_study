@@ -90,8 +90,9 @@ fix_sample_ids <- function(s_id){
   )
 }
 
-df_list <- list(muts_amps, brca1, brca2, hpa_myc, hpa_brca1, hpa_brca2) # pack dfs
-df_list <- list(muts_amps, brca1, brca2, hpa_myc) # pack dfs
+df_list <- list(
+  muts_amps, brca1, brca2, demographics, 
+  hpa_myc, hpa_brca1, hpa_brca2) # pack dfs
 df_list <- lapply(df_list, setDT) # conver dfs to data tables
 df_list <- lapply(df_list, set_sample_id) # apply change 'sample_id' t all dts
 
