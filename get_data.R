@@ -104,7 +104,6 @@ for (i in range_fix) {
     fix_sample_ids)
 }
 
-rm(list=setdiff(ls(), "df_list"))
 # CATEGORIZE INTO NUMERIC-BOOLEAN VECTOR MYC AND BRCA DATA
 categorize <- function(x, myc_down = F){
   if (is.na(x)) {
@@ -122,15 +121,12 @@ categorize <- function(x, myc_down = F){
   }
 }
 
-df_list[[5]]$sample_id <-sapply(as.vector(df_list[[5]]$sample_id), fix_sample_ids)
-df_list[[5]]$sample_id <-sapply(as.vector(df_list[[6]]$sample_id), fix_sample_ids)
 vars_fix <- list(
   c(2, 'myc_cat', T),
   c(3, 'brca1_cat', F),
   c(4, 'brca2_cat', F)
 )
 
-full_data <- join_all(df_list, by='sample_id', type='left', match = "all")
 for (v in vars_fix) {
   df_list[[1]][, v[[2]]] <- sapply(
     df_list[[1]][, as.integer(v[[1]]), with = F][[1]], 
