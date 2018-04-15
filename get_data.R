@@ -134,3 +134,4 @@ for (v in vars_fix) {
     myc_down = v[[3]])
 }
 
+rm(list = setdiff(ls(), "df_list"))
