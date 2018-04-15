@@ -49,7 +49,7 @@ merge_new_cols <- function(df){
   temp_l <- lapply(as.vector(df$Description), subs)
   indata <- as.data.frame(do.call(rbind, temp_l))
   df$Description <- NULL
-  new_df <- merge(df, indata, by = NULL)
+  new_df <- cbind(df, indata)
   return(new_df)
 }
 
