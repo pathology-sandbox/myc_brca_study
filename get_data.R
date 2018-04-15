@@ -56,7 +56,10 @@ merge_new_cols <- function(df){
 hpa_myc <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
                      sheetName = 'HPA_MYC',
                      colClasses = colclass)
+
+# GET DEMOGRAPHICS
 hpa_myc <- merge_new_cols(hpa_myc)
+demographics <- hpa_myc[,c('Sample.ID', 'year', 'sex', 'race')]
 
 # hpa_brca1 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
 #                        sheetName = 'HPA_BRCA1', 
