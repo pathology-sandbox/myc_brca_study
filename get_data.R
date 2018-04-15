@@ -105,6 +105,22 @@ for (i in range_fix) {
 }
 
 rm(list=setdiff(ls(), "df_list"))
+# CATEGORIZE INTO NUMERIC-BOOLEAN VECTOR MYC AND BRCA DATA
+categorize <- function(x, myc_down = F){
+  if (is.na(x)) {
+    return(0)
+  } else {
+    if (as.logical(myc_down)) {
+      if (str_detect(x, 'AMP')) {
+        return(1)
+      } else {
+        return(0)
+      }
+    } else{
+      return(1)
+      }
+  }
+}
 
 df_list[[5]]$sample_id <-sapply(as.vector(df_list[[5]]$sample_id), fix_sample_ids)
 df_list[[5]]$sample_id <-sapply(as.vector(df_list[[6]]$sample_id), fix_sample_ids)
