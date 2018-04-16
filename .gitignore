@@ -35,3 +35,4 @@ vignettes/*.pdf
 # custom
 /data
 /private_data
+.fuse*
