@@ -9,6 +9,13 @@ muts_amps <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx",
                        sheetName = 'TCGA samples_mutations',
                        colClasses = colclass)
 
+na_none <- function (x) {
+  x[is.na(x)] <- 'NONE'
+  return(x)
+}
+
+muts_amps <- as.data.frame(apply(muts_amps, 2, na_none))
+
 colclass <- c(
   c('character', 'numeric'), 
   rep('character', times = 10), 
