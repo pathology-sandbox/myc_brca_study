@@ -12,3 +12,4 @@ demog <- df_list[[4]]
 rm("df_list")
 
 df <- left_join(mut_vs_amp, demog, by = 'sample_id')
+df$age_dicot <- cut(df$age, breaks = c(-Inf, 60, +Inf), labels = c('<=60','>60'))
