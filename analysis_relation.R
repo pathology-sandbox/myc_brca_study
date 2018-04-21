@@ -19,4 +19,13 @@ df$brca2_cat <- as.factor(df$brca2_cat)
 df$sex <- NULL
 df$race <- NULL
 
+names(df)
+numerical <- c("age")
+categorical <- c("sample_id", "MYC", "BRCA1", "BRCA2",
+                 "myc_cat", "brca1_cat", "brca2_cat", "age_dicot")
+df[numerical] <- sapply(df[numerical], function(x) {as.numeric(unlist(x))}) 
+sapply(df[numerical], typeof)
+df[ categorical] <- sapply(df[categorical], factor) 
+sapply(df[categorical], typeof)
+
 
