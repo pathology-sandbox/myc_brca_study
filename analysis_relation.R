@@ -13,3 +13,6 @@ rm("df_list")
 
 df <- left_join(mut_vs_amp, demog, by = 'sample_id')
 df$age_dicot <- cut(df$age, breaks = c(-Inf, 60, +Inf), labels = c('<=60','>60'))
+df$myc_cat <- as.factor(df$myc_cat)
+df$brca1_cat <- as.factor(df$brca1_cat)
+df$brca2_cat <- as.factor(df$brca2_cat)
