@@ -46,7 +46,7 @@ subs <- function(x){
   sex <- str_detect(v, 'male')
   race <- !as.logical(year + sex)
   new_list <- c(
-    year = trimws(gsub("([0-9]+).*$", "\\1", char_check(v[year]))),
+    age = trimws(gsub("([0-9]+).*$", "\\1", char_check(v[year]))),
     sex = trimws(char_check(v[sex])), 
     race = trimws(char_check(v[race])))
   return(new_list)
@@ -55,7 +55,7 @@ subs <- function(x){
 merge_new_cols <- function(df){
   temp_l <- lapply(as.vector(df$Description), subs)
   indata <- as.data.frame(do.call(rbind, temp_l))
-  indata$year <- as.numeric(as.character(indata$year))
+  indata$age <- as.numeric(as.character(indata$age))
   indata$sex <- as.character(indata$sex)
   indata$race <- as.character(indata$race)
   df$Description <- NULL
@@ -69,7 +69,7 @@ hpa_myc <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx",
 
 # GET DEMOGRAPHICS
 hpa_myc <- merge_new_cols(hpa_myc)
-demographics <- hpa_myc[,c('Sample.ID', 'year', 'sex', 'race')]
+demographics <- hpa_myc[,c('Sample.ID', 'age', 'sex', 'race')]
 
 hpa_myc <- hpa_myc[,c('Sample.ID', 'FPKM')]
 names(hpa_myc)[2] <- 'fpkm_myc'
