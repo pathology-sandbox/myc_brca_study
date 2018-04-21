@@ -101,13 +101,13 @@ fix_sample_ids <- function(s_id){
 }
 
 df_list <- list(
-  muts_amps, brca1, brca2, demographics, 
-  hpa_myc, hpa_brca1, hpa_brca2) # pack dfs
+  muts_amps, brca1, brca2, demographics) # pack dfs
 df_list <- lapply(df_list, setDT) # conver dfs to data tables
 df_list <- lapply(df_list, set_sample_id) # apply change 'sample_id' t all dts
 
 # FIX SAMPLE IDS BY REMOVING LETTER TERMINATION
 range_fix <- seq(4,7,1)
+range_fix <- seq(4,4,1)
 for (i in range_fix) {
   df_list[[i]]$sample_id <- sapply(
     as.vector(df_list[[i]]$sample_id),
