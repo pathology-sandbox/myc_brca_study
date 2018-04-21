@@ -29,3 +29,12 @@ df[ categorical] <- sapply(df[categorical], factor)
 sapply(df[categorical], typeof)
 
 
+# DATA EXPLORATION AND DESCRIPTIVE STATS
+
+head(df[,c(3,6,4,7)])
+head(df[numerical])
+head(df[categorical])
+
+summary(df[numerical])
+describe(df[,numerical])
+
