@@ -116,18 +116,18 @@ for (i in range_fix) {
 
 # CATEGORIZE INTO NUMERIC-BOOLEAN VECTOR MYC AND BRCA DATA
 categorize <- function(x, myc_down = F){
-  if (is.na(x)) {
-    return(0)
+  if (as.logical(myc_down)) {
+    if (x == 'NONE') {
+      return('NOT_AMP')
+    } else {
+      return('AMP')
+    }
   } else {
-    if (as.logical(myc_down)) {
-      if (str_detect(x, 'AMP')) {
-        return(1)
-      } else {
-        return(0)
-      }
-    } else{
-      return(1)
-      }
+    if (x == 'NONE') {
+      return('MUTATED')
+    } else {
+      return('NOT_MUTATED')
+    }
   }
 }
 
