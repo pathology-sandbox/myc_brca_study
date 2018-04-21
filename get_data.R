@@ -9,6 +9,13 @@ muts_amps <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx",
                        sheetName = 'TCGA samples_mutations',
                        colClasses = colclass)
 
+na_none <- function (x) {
+  x[is.na(x)] <- 'NONE'
+  return(x)
+}
+
+muts_amps <- as.data.frame(apply(muts_amps, 2, na_none))
+
 colclass <- c(
   c('character', 'numeric'), 
   rep('character', times = 10), 
@@ -20,7 +27,7 @@ brca1 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx",
                    colClasses = colclass)
 
 brca2 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
-                   sheetName = 'BRCA1',
+                   sheetName = 'BRCA2',
                    colClasses = colclass)
 
 colclass <- c('character', 'character', 'numeric')
@@ -94,13 +101,13 @@ fix_sample_ids <- function(s_id){
 }
 
 df_list <- list(
-  muts_amps, brca1, brca2, demographics, 
-  hpa_myc, hpa_brca1, hpa_brca2) # pack dfs
+  muts_amps, brca1, brca2, demographics) # pack dfs
 df_list <- lapply(df_list, setDT) # conver dfs to data tables
 df_list <- lapply(df_list, set_sample_id) # apply change 'sample_id' t all dts
 
 # FIX SAMPLE IDS BY REMOVING LETTER TERMINATION
 range_fix <- seq(4,7,1)
+range_fix <- seq(4,4,1)
 for (i in range_fix) {
   df_list[[i]]$sample_id <- sapply(
     as.vector(df_list[[i]]$sample_id),
@@ -109,18 +116,18 @@ for (i in range_fix) {
 
 # CATEGORIZE INTO NUMERIC-BOOLEAN VECTOR MYC AND BRCA DATA
 categorize <- function(x, myc_down = F){
-  if (is.na(x)) {
-    return(0)
+  if (as.logical(myc_down)) {
+    if (x == 'NONE') {
+      return('NOT_AMP')
+    } else {
+      return('AMP')
+    }
   } else {
-    if (as.logical(myc_down)) {
-      if (str_detect(x, 'AMP')) {
-        return(1)
-      } else {
-        return(0)
-      }
-    } else{
-      return(1)
-      }
+    if (x == 'NONE') {
+      return('MUTATED')
+    } else {
+      return('NOT_MUTATED')
+    }
   }
 }
 
