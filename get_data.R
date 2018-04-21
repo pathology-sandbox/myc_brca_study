@@ -27,7 +27,7 @@ brca1 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx",
                    colClasses = colclass)
 
 brca2 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
-                   sheetName = 'BRCA1',
+                   sheetName = 'BRCA2',
                    colClasses = colclass)
 
 colclass <- c('character', 'character', 'numeric')
