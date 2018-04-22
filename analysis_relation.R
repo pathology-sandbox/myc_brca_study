@@ -13,6 +13,8 @@ rm('df_list') # Remove df_list obtained from source('get_data.R')
 df <- left_join(mut_vs_amp, clinical, by = 'sample_id')
 
 intersect(df$sample_id, clinical$sample_id)
+df$age<-df$AgeAtDiagnosis..yrs.
+df$AgeAtDiagnosis..yrs. <- NULL
 
 df$age_dicot <- cut(
   df$age, breaks = c(-Inf, 60, +Inf), 
