@@ -36,6 +36,10 @@ muts_amps <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx",
                        colClasses = colclass,
                        stringsAsFactors=FALSE)
 
+
+muts_amps[, 1] <- sapply(
+  muts_amps[, 1], function(x) {substr(x, 1, nchar(x) - 3)})
+
 na_none <- function (x) {
   x[is.na(x)] <- 'NONE'
   return(x)
@@ -53,11 +57,15 @@ brca1 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx",
                    sheetName = 'BRCA1',
                    colClasses = colclass,
                    stringsAsFactors=FALSE)
+brca1[, 1] <- sapply(
+  brca1[, 1], function(x) {substr(x, 1, nchar(x) - 3)})
 
 brca2 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
                    sheetName = 'BRCA2',
                    colClasses = colclass,
                    stringsAsFactors=FALSE)
+brca2[, 1] <- sapply(
+  brca2[, 1], function(x) {substr(x, 1, nchar(x) - 3)})
 
 colclass <- c('character', 'character', 'numeric')
 
@@ -96,6 +104,8 @@ hpa_myc <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx",
                      sheetName = 'HPA_MYC',
                      colClasses = colclass,
                      stringsAsFactors=FALSE)
+hpa_myc[, 1] <- sapply(
+  hpa_myc[, 1], function(x) {substr(x, 1, nchar(x) - 3)})
 
 # GET DEMOGRAPHICS
 hpa_myc <- merge_new_cols(hpa_myc)
