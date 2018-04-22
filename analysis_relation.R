@@ -22,6 +22,7 @@ df$age_dicot <- cut(
 df$myc_cat <- as.factor(df$myc_cat)
 df$brca1_cat <- as.factor(df$brca1_cat)
 df$brca2_cat <- as.factor(df$brca2_cat)
+df$brca_mutated <- as.factor(df$brca_mutated)
 df$sex <- NULL
 df$race <- NULL
 
