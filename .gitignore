@@ -36,3 +36,5 @@ vignettes/*.pdf
 /data
 /private_data
 .fuse*
+.DS_Store
+/temp

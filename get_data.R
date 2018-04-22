@@ -2,6 +2,17 @@ library(xlsx)
 library(stringr)
 library(data.table)
 
+colclass <- c(
+  c('character', 'numeric'), 
+  rep('character', times = 6), 
+  rep('numeric', times = 1), 
+  rep('character', times = 2),
+  rep('character', times = 1),
+  rep('character', times = 1))
+
+clinical <- read.xlsx("data/2010-09-11380C-Table_S1.2.xlsx", 
+                      sheetName = 'KeyclinicalDAta',
+                      colClasses = colclass, stringsAsFactors=FALSE)
 
 colclass <- rep('character', times = 4)
 
@@ -19,7 +30,7 @@ muts_amps <- as.data.frame(apply(muts_amps, 2, na_none))
 colclass <- c(
   c('character', 'numeric'), 
   rep('character', times = 10), 
-  rep('numeric', times = ), 
+  rep('numeric', times = 2), 
   rep('character', times = 2))
 
 brca1 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
@@ -101,7 +112,7 @@ fix_sample_ids <- function(s_id){
 }
 
 df_list <- list(
-  muts_amps, brca1, brca2, demographics) # pack dfs
+  muts_amps, brca1, brca2, demographics, clinical) # pack dfs
 df_list <- lapply(df_list, setDT) # conver dfs to data tables
 df_list <- lapply(df_list, set_sample_id) # apply change 'sample_id' t all dts
 
@@ -115,15 +126,19 @@ for (i in range_fix) {
 }
 
 # CATEGORIZE INTO NUMERIC-BOOLEAN VECTOR MYC AND BRCA DATA
-categorize <- function(x, myc_down = F){
-  if (as.logical(myc_down)) {
+categorize <- function(x, myc = F){
+  if (as.logical(myc)) {
     if (x == 'NONE') {
       return('NOT_AMP')
     } else {
-      return('AMP')
+      if (str_detect(x, 'AMP')){
+        return('AMP')
+      } else {
+        return('NOT_AMP')
+      }
     }
   } else {
-    if (x == 'NONE') {
+    if (str_detect(x, 'MUT:')){
       return('MUTATED')
     } else {
       return('NOT_MUTATED')
@@ -141,7 +156,7 @@ for (v in vars_fix) {
   df_list[[1]][, v[[2]]] <- sapply(
     df_list[[1]][, as.integer(v[[1]]), with = F][[1]], 
     categorize,
-    myc_down = v[[3]])
+    myc = v[[3]])
 }
 
 rm(list = setdiff(ls(), "df_list"))
