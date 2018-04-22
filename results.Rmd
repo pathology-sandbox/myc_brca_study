@@ -1,0 +1,32 @@
+---
+title: "resutls"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source('analysis_relation.R') 
+```
+
+
+## Statistical report
+
+### Descriptive stats
+
+```{r dercriptive}
+summary(df)
+```
+
+## Results
+
+A total of `r n_total_patients` were analyzed and comprised `r n_tcga_patients` (`r per_tcga_patients`) patients from the TCGA data base and `r n_tcga_csaascaspatients` (`r per_tccascascascasga_patients` from Robertos database. A total `r n_brca1_mut` (`r per_brca1_mut`) had mutated BRCA1, `r n_brca2_mut` (`r per_brca2_mut`) had mutated BRCA1, and `r n_myc_amp` (`r per_myc_amp`) had amplified MYC.  
+
+MYC amplification showed association with both BRAC1 and BRCA2 (OR: ), even afeter adjusting for age and somatic vs germline muation (Adjuted OR: ). However, MYC amplification was a poor predictor of BRCA1 and BRCA2 mutation (R2, sense?) as most MYC amplified cases were actually BRACA wild-type.
+
+## Tables and figures
+
+```{r plots, echo=FALSE}
+
+```
+
+
