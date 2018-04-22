@@ -19,7 +19,7 @@ muts_amps <- as.data.frame(apply(muts_amps, 2, na_none))
 colclass <- c(
   c('character', 'numeric'), 
   rep('character', times = 10), 
-  rep('numeric', times = ), 
+  rep('numeric', times = 2), 
   rep('character', times = 2))
 
 brca1 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
