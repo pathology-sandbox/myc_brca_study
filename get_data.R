@@ -188,4 +188,17 @@ for (v in vars_fix) {
     myc = v[[3]])
 }
 
+brca_mutated <- function(x, y){
+  if ('MUTATED' %in% c(x, y)){
+    return('MUTATED')
+  } else{
+    return('NOT_MUTATED')
+  }
+}
+
+df_list[[1]][, 'brca_mutated'] <- with(
+  df_list[[1]], ifelse(brca1_cat == 'MUTATED' | 
+                       brca2_cat == 'MUTATED', 
+                                  "MUTATED", "NON_MUTATED"))
+
 rm(list = setdiff(ls(), "df_list"))
