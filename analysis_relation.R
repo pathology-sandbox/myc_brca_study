@@ -38,3 +38,14 @@ head(df[categorical])
 summary(df[numerical])
 describe(df[,numerical])
 
+categ_data_summary <- function(in_col){
+  counts <- as.matrix(table(in_col))
+  proportions <- as.matrix(round(table(in_col)/length(in_col), 2))
+  rmatch <- match(rownames(counts), rownames(proportions) )
+  cat_data <- as.data.frame(cbind( counts, proportions[rmatch,] ))
+  colnames(cat_data) <- c('counts', 'proportions')
+  return(cat_data)
+}
+categorical_summary <- c("MYC", "myc_cat", "brca1_cat", "brca2_cat", "age_dicot")
+cat_data <- lapply(df[categorical_summary], categ_data_summary)
+
