@@ -12,13 +12,33 @@ colclass <- c(
 
 clinical <- read.xlsx("data/2010-09-11380C-Table_S1.2.xlsx", 
                       sheetName = 'KeyclinicalDAta',
-                      colClasses = colclass, stringsAsFactors=FALSE)
+                      colClasses = colclass,
+                      stringsAsFactors=FALSE)
+
+missing_to_na <- function(x) {
+  if (x == 'Missing') {
+    return(NA_character_)
+  }  else {
+    return(x)
+  }
+}
+
+clinical$ProgressionFreeSurvival..mos.. <- sapply(
+  clinical$ProgressionFreeSurvival..mos.., 
+  missing_to_na
+)
+clinical$ProgressionFreeSurvival..mos.. <- as.numeric(clinical$ProgressionFreeSurvival..mos..) 
 
 colclass <- rep('character', times = 4)
 
 muts_amps <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
                        sheetName = 'TCGA samples_mutations',
-                       colClasses = colclass)
+                       colClasses = colclass,
+                       stringsAsFactors=FALSE)
+
+
+muts_amps[, 1] <- sapply(
+  muts_amps[, 1], function(x) {substr(x, 1, nchar(x) - 3)})
 
 na_none <- function (x) {
   x[is.na(x)] <- 'NONE'
@@ -35,11 +55,17 @@ colclass <- c(
 
 brca1 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
                    sheetName = 'BRCA1',
-                   colClasses = colclass)
+                   colClasses = colclass,
+                   stringsAsFactors=FALSE)
+brca1[, 1] <- sapply(
+  brca1[, 1], function(x) {substr(x, 1, nchar(x) - 3)})
 
 brca2 <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
                    sheetName = 'BRCA2',
-                   colClasses = colclass)
+                   colClasses = colclass,
+                   stringsAsFactors=FALSE)
+brca2[, 1] <- sapply(
+  brca2[, 1], function(x) {substr(x, 1, nchar(x) - 3)})
 
 colclass <- c('character', 'character', 'numeric')
 
@@ -76,7 +102,10 @@ merge_new_cols <- function(df){
 
 hpa_myc <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
                      sheetName = 'HPA_MYC',
-                     colClasses = colclass)
+                     colClasses = colclass,
+                     stringsAsFactors=FALSE)
+hpa_myc[, 1] <- sapply(
+  hpa_myc[, 1], function(x) {substr(x, 1, nchar(x) - 3)})
 
 # GET DEMOGRAPHICS
 hpa_myc <- merge_new_cols(hpa_myc)
@@ -158,5 +187,18 @@ for (v in vars_fix) {
     categorize,
     myc = v[[3]])
 }
+
+brca_mutated <- function(x, y){
+  if ('MUTATED' %in% c(x, y)){
+    return('MUTATED')
+  } else{
+    return('NOT_MUTATED')
+  }
+}
+
+df_list[[1]][, 'brca_mutated'] <- with(
+  df_list[[1]], ifelse(brca1_cat == 'MUTATED' | 
+                       brca2_cat == 'MUTATED', 
+                                  "MUTATED", "NON_MUTATED"))
 
 rm(list = setdiff(ls(), "df_list"))
