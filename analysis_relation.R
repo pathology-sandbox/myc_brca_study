@@ -8,16 +8,11 @@ muts_brca1 <- df_list[[2]]
 muts_brca2 <- df_list[[3]]
 demog <- df_list[[4]]
 clinical <- df_list[[5]]
-rm("df_list") # Remove df_list obtained from source('get_data.R')
+rm('df_list') # Remove df_list obtained from source('get_data.R')
 
 df <- left_join(mut_vs_amp, demog, by = 'sample_id')
-df$sample_id <- sapply(df$sample_id, function(x) {substr(x, 1, nchar(x) - 3)})
 
 intersect(df$sample_id, clinical$sample_id)
-
-df2 <- left_join(df, clinical, by = 'sample_id')
-typeof(df$sample_id)
-typeof(clinical$sample_id)
 
 df$age_dicot <- cut(
   df$age, breaks = c(-Inf, 60, +Inf), 
