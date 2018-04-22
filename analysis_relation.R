@@ -10,7 +10,7 @@ demog <- df_list[[4]]
 clinical <- df_list[[5]]
 rm('df_list') # Remove df_list obtained from source('get_data.R')
 
-df <- left_join(mut_vs_amp, demog, by = 'sample_id')
+df <- left_join(mut_vs_amp, clinical, by = 'sample_id')
 
 intersect(df$sample_id, clinical$sample_id)
 
