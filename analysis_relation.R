@@ -1,5 +1,6 @@
 library(psych)
 library(dplyr)
+library(rms)
 
 # GET DATA 
 source('get_data.R') # get tidy data via script
@@ -58,5 +59,38 @@ categ_data_summary <- function(in_col){
   colnames(cat_data) <- c('counts', 'proportions')
   return(cat_data)
 }
-categorical_summary <- c("MYC", "myc_cat", "brca1_cat", "brca2_cat", "age_dicot")
+
+categorical_summary <- c(
+  'MYC', 'myc_cat', 'brca1_cat', 'brca2_cat', 'brca_mutated', 'age_dicot',
+  'VITALSTATUS', 'TUMORSTAGE', 'TUMORGRADE', 'TUMORRESIDUALDISEASE',
+  'PRIMARYTHERAPYOUTCOMESUCCESS', 'PERSONNEOPLASMCANCERSTATUS',
+  'ProgressionFreeStatus', 'PlatinumStatus')
 cat_data <- lapply(df[categorical_summary], categ_data_summary)
+
+# Models
+df <- within(df, brca1 <- relevel(brca1_cat, ref = 'NOT_MUTATED'))
+df <- within(df, brca2 <- relevel(brca2, ref = 'NOT_MUTATED'))
+df <- within(df, myc_cat <- relevel(myc_cat, ref = 'AMP'))
+(round(table(df$brca1_cat , df$myc_cat)/316,2)*100)
+
+## BRCA1
+brca1_myc_uni <- lrm(
+  brca1_cat ~ myc_cat,
+  data = df,
+  na.action = na.delete)
+
+brca1_myc_multi <- lrm(
+  brca1_cat ~ myc_cat + age_dicot + TUMORSTAGE,
+  data = df,
+  na.action = na.delete)
+
+## BRCA1
+brca2_myc_uni <- lrm(
+  brca2_cat ~ myc_cat,
+  data = df,
+  na.action = na.delete)
+
+brca2_myc_multi <- lrm(
+  brca2_cat ~ myc_cat + age_dicot + TUMORSTAGE,
+  data = df,
+  na.action = na.delete)
