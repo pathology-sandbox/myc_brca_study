@@ -15,6 +15,20 @@ clinical <- read.xlsx("data/2010-09-11380C-Table_S1.2.xlsx",
                       colClasses = colclass,
                       stringsAsFactors=FALSE)
 
+missing_to_na <- function(x) {
+  if (x == 'Missing') {
+    return(NA_character_)
+  }  else {
+    return(x)
+  }
+}
+
+clinical$ProgressionFreeSurvival..mos.. <- sapply(
+  clinical$ProgressionFreeSurvival..mos.., 
+  missing_to_na
+)
+clinical$ProgressionFreeSurvival..mos.. <- as.numeric(clinical$ProgressionFreeSurvival..mos..) 
+
 colclass <- rep('character', times = 4)
 
 muts_amps <- read.xlsx("data/TCGA-and-HPA_DATA-MYC-BRCA1-BRCA2.xlsx", 
