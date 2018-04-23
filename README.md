@@ -1,4 +1,4 @@
-# Association between MYC gene amplification and mutations in BRCA1 and BRCA2 genes
+# Association between MYC gene amplification and mutations in BRCA1 and BRCA2 genes in HGSOC
 
 
 ## Scripts 
