@@ -3,7 +3,7 @@ library(dplyr)
 library(rms)
 
 # GET DATA 
-source('get_data.R') # get tidy data via script
+source('get_data_tcga.R') # get tidy data via script
 mut_vs_amp <- df_list[[1]]
 muts_brca1 <- df_list[[2]]
 muts_brca2 <- df_list[[3]]
@@ -11,23 +11,25 @@ demog <- df_list[[4]]
 clinical <- df_list[[5]]
 rm('df_list') # Remove df_list obtained from source('get_data.R')
 
-df <- left_join(mut_vs_amp, clinical, by = 'sample_id')
+df_tcga <- left_join(mut_vs_amp, clinical, by = 'sample_id')
 
-intersect(df$sample_id, clinical$sample_id)
-df$age<-df$AgeAtDiagnosis..yrs.
-df$AgeAtDiagnosis..yrs. <- NULL
 
-df$age_dicot <- cut(
-  df$age, breaks = c(-Inf, 60, +Inf), 
+
+intersect(df_tcga$sample_id, clinical$sample_id)
+df_tcga$age<-df_tcga$AgeAtDiagnosis..yrs.
+df_tcga$AgeAtDiagnosis..yrs. <- NULL
+
+df_tcga$age_dicot <- cut(
+  df_tcga$age, breaks = c(-Inf, 60, +Inf), 
   labels = c('<=60','>60'))
-df$myc_cat <- as.factor(df$myc_cat)
-df$brca1_cat <- as.factor(df$brca1_cat)
-df$brca2_cat <- as.factor(df$brca2_cat)
-df$brca_mutated <- as.factor(df$brca_mutated)
-df$sex <- NULL
-df$race <- NULL
+df_tcga$myc_cat <- as.factor(df_tcga$myc_cat)
+df_tcga$brca1_cat <- as.factor(df_tcga$brca1_cat)
+df_tcga$brca2_cat <- as.factor(df_tcga$brca2_cat)
+df_tcga$brca_mutated <- as.factor(df_tcga$brca_mutated)
+df_tcga$sex <- NULL
+df_tcga$race <- NULL
 
-names(df)
+names(df_tcga)
 numerical <- c('age', 'OverallSurvival.mos.', 'ProgressionFreeSurvival..mos..', 'PlatinumFreeInterval..mos..'
                )
 categorical <- c('sample_id', 'MYC', 'BRCA1', 'BRCA2',
@@ -36,20 +38,19 @@ categorical <- c('sample_id', 'MYC', 'BRCA1', 'BRCA2',
                  'PRIMARYTHERAPYOUTCOMESUCCESS', 'PERSONNEOPLASMCANCERSTATUS',
                  'ProgressionFreeStatus', 'PlatinumStatus'
                  )
-df[numerical] <- sapply(df[numerical], function(x) {as.numeric(unlist(x))}) 
-sapply(df[numerical], typeof)
-df[ categorical] <- sapply(df[categorical], factor) 
-sapply(df[categorical], typeof)
+df_tcga[numerical] <- sapply(df_tcga[numerical], function(x) {as.numeric(unlist(x))}) 
+sapply(df_tcga[numerical], typeof)
+# df_tcga[ categorical] <- sapply(df_tcga[categorical], function(x) {as.factor(x)}) 
+sapply(df_tcga[categorical], typeof)
 
 
 # DATA EXPLORATION AND DESCRIPTIVE STATS
+head(df_tcga[,c(3,6,4,7)])
+head(df_tcga[numerical])
+head(df_tcga[categorical])
 
-head(df[,c(3,6,4,7)])
-head(df[numerical])
-head(df[categorical])
-
-summary(df[numerical])
-describe(df[,numerical])
+summary(df_tcga[numerical])
+describe(df_tcga[,numerical])
 
 categ_data_summary <- function(in_col){
   counts <- as.matrix(table(in_col))
@@ -65,32 +66,33 @@ categorical_summary <- c(
   'VITALSTATUS', 'TUMORSTAGE', 'TUMORGRADE', 'TUMORRESIDUALDISEASE',
   'PRIMARYTHERAPYOUTCOMESUCCESS', 'PERSONNEOPLASMCANCERSTATUS',
   'ProgressionFreeStatus', 'PlatinumStatus')
-cat_data <- lapply(df[categorical_summary], categ_data_summary)
+cat_data <- lapply(df_tcga[categorical_summary], categ_data_summary)
 
 # Models
-df <- within(df, brca1 <- relevel(brca1_cat, ref = 'NOT_MUTATED'))
-df <- within(df, brca2 <- relevel(brca2, ref = 'NOT_MUTATED'))
-df <- within(df, myc_cat <- relevel(myc_cat, ref = 'AMP'))
-(round(table(df$brca1_cat , df$myc_cat)/316,2)*100)
+df_tcga <- within(df_tcga, brca1 <- relevel(brca1_cat, ref = 'NOT_MUTATED'))
+df_tcga <- within(df_tcga, brca2 <- relevel(brca2_cat, ref = 'NOT_MUTATED'))
+df_tcga <- within(df_tcga, myc_cat <- relevel(myc_cat, ref = 'AMP'))
+(round(table(df_tcga$brca2_cat , df_tcga$myc_cat)/316,2)*100)
+table(df_tcga$brca2_cat, df_tcga$myc_cat)
 
 ## BRCA1
 brca1_myc_uni <- lrm(
   brca1_cat ~ myc_cat,
-  data = df,
+  data = df_tcga,
   na.action = na.delete)
 
 brca1_myc_multi <- lrm(
   brca1_cat ~ myc_cat + age_dicot + TUMORSTAGE,
-  data = df,
+  data = df_tcga,
   na.action = na.delete)
 
 ## BRCA1
 brca2_myc_uni <- lrm(
   brca2_cat ~ myc_cat,
-  data = df,
+  data = df_tcga,
   na.action = na.delete)
 
 brca2_myc_multi <- lrm(
   brca2_cat ~ myc_cat + age_dicot + TUMORSTAGE,
-  data = df,
+  data = df_tcga,
   na.action = na.delete)
